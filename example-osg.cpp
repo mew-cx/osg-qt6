@@ -37,7 +37,7 @@ protected:
 		_viewer->setCameraManipulator(new osgGA::TrackballManipulator());
 
 		// TODO: Just letting QT6 "do its own thing" here seems to work much better. Need to
-		// investigate this for more complex needs.
+		// investigate this for more complex setups.
 		/* osg::GraphicsContext::Traits* traits = new osg::GraphicsContext::Traits();
 
 		traits->x = 0;
