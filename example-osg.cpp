@@ -1,4 +1,5 @@
 #include <QOpenGLWidget>
+#include <QOpenGLFunctions>
 #include <QApplication>
 #include <QMainWindow>
 #include <QTimer>
@@ -8,21 +9,20 @@
 #include <osgGA/TrackballManipulator>
 #include <osgDB/ReadFile>
 
-class OSGWidget: public QOpenGLWidget {
+class OSGWidget: public QOpenGLWidget, protected QOpenGLFunctions {
 
 Q_OBJECT
 
 public:
 	OSGWidget(QWidget* parent=nullptr):
 	QOpenGLWidget(parent) {
-		// Set up a timer to refresh the scene 60 times per second
 		_timer = new QTimer(this);
 
 		// connect(_timer, &QTimer::timeout, this, &OSGWidget::update);
 		// connect(_timer, &QTimer::timeout, this, QOverload<>::of(&OSGWidget::repaint));
 		connect(_timer, &QTimer::timeout, this, QOverload<>::of(&OSGWidget::update));
 
-		_timer->start(1000 / 60); // 60 FPS
+		_timer->start(1000 / 60);
 	}
 
 protected:
@@ -34,7 +34,6 @@ protected:
 		_viewer->setSceneData(osgDB::readNodeFile("cow.osgt"));
 		_viewer->setCameraManipulator(new osgGA::TrackballManipulator());
 
-		// Create an OSG Graphics Context that shares Qt's OpenGL context
 		osg::GraphicsContext::Traits* traits = new osg::GraphicsContext::Traits();
 
 		traits->x = 0;
