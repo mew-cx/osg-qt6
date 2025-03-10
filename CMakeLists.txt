@@ -22,11 +22,19 @@ function(EXAMPLE_EXE name)
 	target_link_libraries(example-${name} PRIVATE
 		Qt6::OpenGLWidgets Qt6::Widgets
 		${OPENSCENEGRAPH_LIBRARIES}
+		osgEarthd
+		GL
+		GLEW
+		gdal
 	)
 	target_include_directories(example-${name} PRIVATE
 		${OPENSCENEGRAPH_INCLUDE_DIRS}
+	)
+	target_link_directories(example-${name} PRIVATE
+		"/home/cubicool/local-NOASAN/lib"
 	)
 endfunction()
 
 example_exe("gl")
 example_exe("osg")
+example_exe("osgearth")
