@@ -4,10 +4,45 @@
 #include <QMainWindow>
 #include <QTimer>
 
+#include <osg/Geode>
+#include <osg/MatrixTransform>
+#include <osg/ShapeDrawable>
+#include <osg/Point>
+#include <osg/PolygonMode>
+#include <osgGA/TrackballManipulator>
 #include <osgViewer/Viewer>
 #include <osgViewer/GraphicsWindow>
-#include <osgGA/TrackballManipulator>
-#include <osgDB/ReadFile>
+
+namespace osg_qt6 {
+
+using vec_t = osg::Vec3::value_type;
+
+osg::ShapeDrawable* createSphere(vec_t radius, vec_t pSize) {
+	osg::ShapeDrawable* s = new osg::ShapeDrawable(new osg::Sphere(
+		osg::Vec3(0.0, 0.0, 0.0),
+		radius
+	));
+
+	s->getOrCreateStateSet()->setAttribute(
+		new osg::Point(pSize),
+		osg::StateAttribute::ON
+	);
+
+	return s;
+}
+
+osg::MatrixTransform* createSphereAt(const osg::Vec3& pos, vec_t radius, vec_t pSize) {
+	osg::MatrixTransform* m = new osg::MatrixTransform(osg::Matrix::translate(pos));
+	osg::Geode* g = new osg::Geode();
+
+	g->addDrawable(createSphere(radius, pSize));
+
+	m->addChild(g);
+
+	return m;
+}
+
+}
 
 class OSGWidget: public QOpenGLWidget, protected QOpenGLFunctions {
 
@@ -29,11 +64,19 @@ protected:
 	void initializeGL() override {
 		OSG_WARN << "initializeGL" << std::endl;
 
+		osg::Group* root = new osg::Group();
+
+		root->addChild(osg_qt6::createSphereAt(osg::Vec3(), 10.0, 2.0));
+		root->getOrCreateStateSet()->setAttributeAndModes(
+			new osg::PolygonMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::POINT),
+			osg::StateAttribute::ON
+		);
+
 		_viewer = new osgViewer::Viewer();
 
 		_viewer->setUpViewerAsEmbeddedInWindow(0, 0, width(), height());
 		_viewer->setThreadingModel(osgViewer::Viewer::SingleThreaded);
-		_viewer->setSceneData(osgDB::readNodeFile("cow.osgt"));
+		_viewer->setSceneData(root);
 		_viewer->setCameraManipulator(new osgGA::TrackballManipulator());
 
 		// TODO: Just letting QT6 "do its own thing" here seems to work much better. Need to
