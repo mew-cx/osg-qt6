@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QTimer>
 
+#include <osgDB/ReadFile>
+
 #include <osgViewer/Viewer>
 #include <osgViewer/GraphicsWindow>
 
@@ -12,6 +14,44 @@
 #include <osgEarth/GDAL>
 #include <osgEarth/EarthManipulator>
 #include <osgEarth/ExampleResources>
+
+class MyTextureLayer: public osgEarth::ImageLayer {
+public:
+	META_Layer(osgEarth, MyTextureLayer, Options, ImageLayer, mytexturelayer);
+
+	void setPath(const std::string& path) {
+		_path = path.c_str();
+	}
+
+	virtual osgEarth::Status openImplementation() {
+		osg::ref_ptr<osg::Image> image = osgDB::readRefImageFile(_path);
+
+		if(image.valid()) _tex = new osg::Texture2D(image.get());
+
+		else return osgEarth::Status(osgEarth::Status::ConfigurationError, "no path");
+
+		setProfile(osgEarth::Profile::create(osgEarth::Profile::GLOBAL_GEODETIC));
+		setUseCreateTexture();
+		addDataExtent(osgEarth::DataExtent(getProfile()->getExtent(), 0, 0));
+
+		return osgEarth::Status::OK();
+	}
+
+	virtual osgEarth::TextureWindow createTexture(
+		const osgEarth::TileKey& key,
+		osgEarth::ProgressCallback* progress
+	) const {
+		osg::Matrixf textureMatrix;
+
+		key.getExtent().createScaleBias(getProfile()->getExtent(), textureMatrix);
+
+		return osgEarth::TextureWindow(_tex.get(), textureMatrix);
+	}
+
+protected:
+	std::string _path;
+	osg::ref_ptr<osg::Texture2D> _tex;
+};
 
 class OSGWidget: public QOpenGLWidget, protected QOpenGLFunctions {
 
@@ -36,11 +76,19 @@ protected:
 		osgEarth::initialize();
 
 		osgEarth::Map* map = new osgEarth::Map();
-		osgEarth::GDALImageLayer* imagery = new osgEarth::GDALImageLayer();
+
+		/* osgEarth::GDALImageLayer* imagery = new osgEarth::GDALImageLayer();
 
 		imagery->setURL("../world.tif");
 
-		map->addLayer(imagery);
+		map->addLayer(imagery); */
+
+		auto texLayer = new MyTextureLayer();
+
+		texLayer->setPath("../grid2.png");
+		texLayer->setOpacity(0.5f);
+
+		map->addLayer(texLayer);
 
 		osgEarth::MapNode* node = new osgEarth::MapNode(map);
 
@@ -77,6 +125,8 @@ private:
 };
 
 int main(int argc, char** argv) {
+	QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
+
 	QApplication app(argc, argv);
 
 	QMainWindow mainWindow;

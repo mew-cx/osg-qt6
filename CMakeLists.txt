@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 project(qt6-oe3)
 
+set(CMAKE_PREFIX_PATH "C:/Qt/6.8.2/msvc2022_64;D:/dev/local")  # Change this for MSVC
 find_package(Qt6 REQUIRED COMPONENTS OpenGLWidgets Widgets)
 find_package(OpenSceneGraph REQUIRED
 	osg
@@ -23,15 +24,15 @@ function(EXAMPLE_EXE name)
 		Qt6::OpenGLWidgets Qt6::Widgets
 		${OPENSCENEGRAPH_LIBRARIES}
 		osgEarthd
-		GL
-		GLEW
-		gdal
+		#GL
+		#GLEW
+		#gdal
 	)
 	target_include_directories(example-${name} PRIVATE
 		${OPENSCENEGRAPH_INCLUDE_DIRS}
 	)
 	target_link_directories(example-${name} PRIVATE
-		"/home/cubicool/local-NOASAN/lib"
+		"D:/Dev/local/lib"
 	)
 endfunction()
 
