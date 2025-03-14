@@ -1,7 +1,17 @@
-REM Path=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files (x86)\Incredibuild;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\Git\cmd;C:\Program Files\CMake\bin;C:\Users\mew\.cargo\bin;C:\Users\mew\AppData\Local\Microsoft\WindowsApps;e:\usr\ap\osgearth_mew\vcpkg\installed\x64-windows\bin\;e:\usr\ap\osgearth_mew\vcpkg\installed\x64-windows\debug\bin\;e:\usr\ap\osgearth_mew\vcpkg\installed\x64-windows\debug\plugins\osgPlugins-3.6.5\;e:\usr\ap\osgearth_mew\vcpkg\installed\x64-windows\plugins\osgPlugins-3.6.5\;c:\Qt\6.8.2\msvc2022_64\bin\;
 
-Path=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files (x86)\Incredibuild;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\Git\cmd;C:\Program Files\CMake\bin;C:\Users\mew\.cargo\bin;C:\Users\mew\AppData\Local\Microsoft\WindowsApps;e:\usr\ap\osgearth_mew\vcpkg\installed\x64-windows\bin\;e:\usr\ap\osgearth_mew\vcpkg\installed\x64-windows\debug\bin\;e:\usr\ap\osgearth_mew\vcpkg\installed\x64-windows\debug\plugins;e:\usr\ap\osgearth_mew\vcpkg\installed\x64-windows\plugins;c:\Qt\6.8.2\msvc2022_64\bin\;
+Path=C:\Windows\system32;C:\Program Files\CMake\bin;e:\usr\ap\osgearth_mew\vcpkg\installed\x64-windows\bin\;e:\usr\ap\osgearth_mew\vcpkg\installed\x64-windows\debug\bin\;e:\usr\ap\osgearth_mew\vcpkg\installed\x64-windows\debug\plugins;e:\usr\ap\osgearth_mew\vcpkg\installed\x64-windows\plugins;c:\Qt\6.8.2\msvc2022_64\bin\
+
 
 .\example-gl.exe
+
+set PROJ_LIB=C:\Program Files\GDAL\projlib
+set GDAL_DATA=C:\Program Files\GDAL\gdal-data
+set GDAL_DRIVER_PATH=C:\Program Files\GDAL\gdalplugins
+REM dir %GDAL_DRIVER_PATH%
+
+REM set OSG_NOTIFY_LEVEL=DEBUG
 .\example-osg.exe
+
+REM set OSG_NOTIFY_LEVEL=DEBUG
+REM set OSGEARTH_NOTIFY_LEVEL=DEBUG
 .\example-osgearth.exe
