@@ -24,7 +24,7 @@ function(EXAMPLE_EXE name)
 	target_link_libraries(example-${name} PRIVATE
 		Qt6::OpenGLWidgets Qt6::Widgets
 		${OPENSCENEGRAPH_LIBRARIES}
-		osgEarthd
+		osgEarth
 		#GL
 		#GLEW
 		#gdal
