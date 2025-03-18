@@ -16,36 +16,27 @@
 #include <osgEarth/EarthManipulator>
 #include <osgEarth/ExampleResources>
 
-/////////////////////////////////////////////////////////////////////////////
-// osgearth-viewer
-
-#include <osgGA/TrackballManipulator>
 #include <iostream>
 
 #include <osgEarth/Metrics>
 
-#define LC "[viewer] "
+//#define LC "[viewer] "
+
+/////////////////////////////////////////////////////////////////////////////
+// osgearth-viewer
 
 using namespace osgEarth;
 using namespace osgEarth::Util;
 
 int
-main(int argc, char** argv)
+main2(int argc, char** argv)
 {
     osg::ArgumentParser arguments(&argc,argv);
 
-    // start up osgEarth
     osgEarth::initialize(arguments);
-
     osgViewer::Viewer viewer(arguments);
-
-    // install our default manipulator (do this before calling load)
     viewer.setCameraManipulator(new EarthManipulator(arguments));
-
-    // disable the small-feature culling; necessary for some feature rendering
     viewer.getCamera()->setSmallFeatureCullingPixelSize(-1.0f);
-
-    // load an earth file, and support all or our example command-line options
     auto node = MapNodeHelper().load(arguments, &viewer);
     if (node.valid())
     {
@@ -54,20 +45,6 @@ main(int argc, char** argv)
             viewer.setSceneData(node);
             return viewer.run();
         }
-#if 0
-        else
-        {
-            // not an earth file? Just view as a normal OSG node or image with basic lighting
-            viewer.setCameraManipulator(new osgGA::TrackballManipulator);
-
-            {
-                ShaderGenerator gen;
-                gen.run(node);
-                viewer.setSceneData(node);
-                return viewer.run();
-            }
-        }
-#endif
     }
 }
 
