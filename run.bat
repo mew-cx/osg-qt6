@@ -1,29 +1,28 @@
-REM run.bat - launch Qt6 demo
+REM
 
+set VCPKG_ROOT=e:\usr\ap\osgearth_mew_tools\vcpkg
 
-set PATH=C:\Windows\system32;C:\Program Files\CMake\bin;e:\usr\ap\osgearth_mew_tools\vcpkg\installed\x64-windows\bin\;e:\usr\ap\osgearth_mew_tools\vcpkg\installed\x64-windows\plugins;c:\Qt\6.8.2\msvc2022_64\bin
+set PATH=%PATH%;c:\Qt\6.8.2\msvc2022_64\bin
+set PATH=%PATH%;%VCPKG_ROOT%\installed\x64-windows\bin
+set PATH=%PATH%;%VCPKG_ROOT%\installed\x64-windows\plugins
+set PATH=%PATH%;%VCPKG_ROOT%\installed\x64-windows\tools\osgearth
+set PATH=%PATH%;%VCPKG_ROOT%\installed\x64-windows\debug\bin
+set PATH=%PATH%;%VCPKG_ROOT%\installed\x64-windows\debug\plugins
 
-REM e:\usr\ap\osgearth_mew_tools\vcpkg\installed\x64-windows\debug\bin\
-REM e:\usr\ap\osgearth_mew_tools\vcpkg\installed\x64-windows\debug\plugins
-
-
-set OEI=e:\usr\ap\osgearth_mew_tools\vcpkg\installed\x64-windows\tools\osgearth\osgearth_imgui.exe
-set OEV=e:\usr\ap\osgearth_mew_tools\vcpkg\installed\x64-windows\tools\osgearth\osgearth_viewer.exe
-REM %OEV% cr-qt6.earth
-
-REM e:\usr\ap\osg-qt6\_BUILD\Release
-REM e:\usr\ap\osg-qt6\_BUILD\Release\example-gl.exe
+set PATH=%PATH%;e:\usr\ap\osg-qt6\_BUILD\Release
 
 set PROJ_LIB=C:\Program Files\GDAL\projlib
 set GDAL_DATA=C:\Program Files\GDAL\gdal-data
 set GDAL_DRIVER_PATH=C:\Program Files\GDAL\gdalplugins
 
-REM set OSG_NOTIFY_LEVEL=DEBUG
-REM e:\usr\ap\osg-qt6\_BUILD\Release\example-osg.exe
+set OSG_NOTIFY_LEVEL=DEBUG
+set OSG_NOTIFY_LEVEL=
 
-REM set OSG_NOTIFY_LEVEL=DEBUG
-REM set OSGEARTH_NOTIFY_LEVEL=DEBUG
-e:\usr\ap\osg-qt6\_BUILD\Release\example-osgearth.exe cr-qt6.earth
+set OSGEARTH_NOTIFY_LEVEL=DEBUG
+set OSGEARTH_NOTIFY_LEVEL=
 
-
-REM e:\usr\ap\osg-qt6\_BUILD\Release\example-osgearth-qt6.exe cr-qt6.earth
+::osgearth_version.exe --caps
+::osgearth_viewer.exe cr-qt6.earth
+::example-gl.exe
+::example-osg.exe
+example-osgearth.exe cr-qt6.earth 
