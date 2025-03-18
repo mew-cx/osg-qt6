@@ -65,11 +65,15 @@ public:
         _timer->start(1000 / 60);
     }
 
+    void parseArgs(int argc, char** argv) {
+        _args = new osg::ArgumentParser(&argc,argv);
+    }
+
 protected:
     void initializeGL() override {
         OSG_WARN << "initializeGL" << std::endl;
 
-        osgEarth::initialize();
+        osgEarth::initialize(*_args);
 
         osgEarth::Map* map = new osgEarth::Map();
 
@@ -105,7 +109,7 @@ private:
     osg::ref_ptr<osgViewer::Viewer> _viewer;
 
     QTimer* _timer = nullptr;
-    osg::ArgumentParser _args;
+    osg::ArgumentParser* _args = nullptr;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -118,6 +122,7 @@ int main(int argc, char** argv) {
     QMainWindow mainWindow;
 
     OSGWidget* osgWidget = new OSGWidget();
+    osgWidget->parseArgs(argc, argv);
 
     mainWindow.setCentralWidget(osgWidget);
     mainWindow.resize(800, 600);
