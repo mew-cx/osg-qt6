@@ -22,6 +22,5 @@ https://readymap.org
 		 <vdatum>egm96</vdatum>
 	 </TMSElevation>
 
-    <xi:include href="viewpoints.xml"/>
     <xi:include href="cr-viewpoints.xml"/>
 </map>
