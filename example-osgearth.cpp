@@ -29,7 +29,7 @@ using namespace osgEarth;
 using namespace osgEarth::Util;
 
 int
-main(int argc, char** argv)
+main2(int argc, char** argv)
 {
     osg::ArgumentParser arguments(&argc,argv);
 
@@ -105,11 +105,12 @@ private:
 	osg::ref_ptr<osgViewer::Viewer> _viewer;
 
 	QTimer* _timer = nullptr;
+    osg::ArgumentParser _args;
 };
 
 /////////////////////////////////////////////////////////////////////////////
 
-int mainQ(int argc, char** argv) {
+int main(int argc, char** argv) {
 	QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
 
 	QApplication app(argc, argv);
