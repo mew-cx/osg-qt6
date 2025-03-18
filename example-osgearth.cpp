@@ -19,6 +19,7 @@
 #include <iostream>
 
 #include <osgEarth/Metrics>
+#include <osgEarth/GLUtils>
 
 //#define LC "[viewer] "
 
@@ -38,13 +39,9 @@ main2(int argc, char** argv)
     viewer.setCameraManipulator(new EarthManipulator(arguments));
     viewer.getCamera()->setSmallFeatureCullingPixelSize(-1.0f);
     auto node = MapNodeHelper().load(arguments, &viewer);
-    if (node.valid())
-    {
-        if (MapNode::get(node))
-        {
+    if (node.valid() && MapNode::get(node)) {
             viewer.setSceneData(node);
             return viewer.run();
-        }
     }
 }
 
@@ -74,17 +71,29 @@ protected:
         OSG_WARN << "initializeGL" << std::endl;
 
         osgEarth::initialize(*_args);
+        //osgEarth::Map* map = new osgEarth::Map();
+        //osgEarth::MapNode* node = new osgEarth::MapNode(map);
 
-        osgEarth::Map* map = new osgEarth::Map();
+        _viewer = new osgViewer::Viewer(*_args);
+        _viewer->setCameraManipulator(new osgEarth::EarthManipulator(*_args));
+        _viewer->getCamera()->setSmallFeatureCullingPixelSize(-1.0f);
 
-        osgEarth::MapNode* node = new osgEarth::MapNode(map);
-
-        _viewer = new osgViewer::Viewer();
         _viewer->setUpViewerAsEmbeddedInWindow(0, 0, width(), height());
         _viewer->setThreadingModel(osgViewer::Viewer::SingleThreaded);
-        _viewer->setCameraManipulator(new osgEarth::EarthManipulator());
-        _viewer->setSceneData(node);
 
+        OSG_WARN << "GL3RealizeOperation" << std::endl;
+        _viewer->setRealizeOperation(new GL3RealizeOperation());
+
+        auto node = MapNodeHelper().load(*_args, _viewer);
+        if (node.valid() && MapNode::get(node)) {
+            OSG_WARN << "MapNode is GOOD, setSceneData" << std::endl;
+            _viewer->setSceneData(node);
+        }
+        else {
+            OSG_WARN << "no MapNode" << std::endl;
+        }
+
+        OSG_WARN << "configureView" << std::endl;
         osgEarth::MapNodeHelper().configureView(_viewer);
     }
 
@@ -96,7 +105,7 @@ protected:
     }
 
     void paintGL() override {
-        OSG_WARN << "paintGL" << std::endl;
+        // OSG_WARN << "paintGL" << std::endl;
 
         // TODO: This is important! I'm still investigating what value is actually being implied by
         // `defaultFramebufferObject()` here; however, this simple example SEEMS to work without it.
