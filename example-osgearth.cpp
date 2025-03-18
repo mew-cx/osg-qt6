@@ -1,3 +1,4 @@
+
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 #include <QApplication>
@@ -15,43 +16,62 @@
 #include <osgEarth/EarthManipulator>
 #include <osgEarth/ExampleResources>
 
-class MyTextureLayer: public osgEarth::ImageLayer {
-public:
-	META_Layer(osgEarth, MyTextureLayer, Options, ImageLayer, mytexturelayer);
+/////////////////////////////////////////////////////////////////////////////
+// osgearth-viewer
 
-	void setPath(const std::string& path) {
-		_path = path.c_str();
-	}
+#include <osgGA/TrackballManipulator>
+#include <iostream>
 
-	virtual osgEarth::Status openImplementation() {
-		osg::ref_ptr<osg::Image> image = osgDB::readRefImageFile(_path);
+#include <osgEarth/Metrics>
 
-		if(image.valid()) _tex = new osg::Texture2D(image.get());
+#define LC "[viewer] "
 
-		else return osgEarth::Status(osgEarth::Status::ConfigurationError, "no path");
+using namespace osgEarth;
+using namespace osgEarth::Util;
 
-		setProfile(osgEarth::Profile::create(osgEarth::Profile::GLOBAL_GEODETIC));
-		setUseCreateTexture();
-		addDataExtent(osgEarth::DataExtent(getProfile()->getExtent(), 0, 0));
+int
+main(int argc, char** argv)
+{
+    osg::ArgumentParser arguments(&argc,argv);
 
-		return osgEarth::Status::OK();
-	}
+    // start up osgEarth
+    osgEarth::initialize(arguments);
 
-	virtual osgEarth::TextureWindow createTexture(
-		const osgEarth::TileKey& key,
-		osgEarth::ProgressCallback* progress
-	) const {
-		osg::Matrixf textureMatrix;
+    osgViewer::Viewer viewer(arguments);
 
-		key.getExtent().createScaleBias(getProfile()->getExtent(), textureMatrix);
+    // install our default manipulator (do this before calling load)
+    viewer.setCameraManipulator(new EarthManipulator(arguments));
 
-		return osgEarth::TextureWindow(_tex.get(), textureMatrix);
-	}
+    // disable the small-feature culling; necessary for some feature rendering
+    viewer.getCamera()->setSmallFeatureCullingPixelSize(-1.0f);
 
-protected:
-	std::string _path;
-	osg::ref_ptr<osg::Texture2D> _tex;
-};
+    // load an earth file, and support all or our example command-line options
+    auto node = MapNodeHelper().load(arguments, &viewer);
+    if (node.valid())
+    {
+        if (MapNode::get(node))
+        {
+            viewer.setSceneData(node);
+            return viewer.run();
+        }
+#if 0
+        else
+        {
+            // not an earth file? Just view as a normal OSG node or image with basic lighting
+            viewer.setCameraManipulator(new osgGA::TrackballManipulator);
+
+            {
+                ShaderGenerator gen;
+                gen.run(node);
+                viewer.setSceneData(node);
+                return viewer.run();
+            }
+        }
+#endif
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////
 
 class OSGWidget: public QOpenGLWidget, protected QOpenGLFunctions {
 
@@ -82,13 +102,6 @@ protected:
 		imagery->setURL("../world.tif");
 
 		map->addLayer(imagery); */
-
-		auto texLayer = new MyTextureLayer();
-
-		texLayer->setPath("../grid2.png");
-		texLayer->setOpacity(0.5f);
-
-		map->addLayer(texLayer);
 
 		osgEarth::MapNode* node = new osgEarth::MapNode(map);
 
@@ -124,7 +137,9 @@ private:
 	QTimer* _timer = nullptr;
 };
 
-int main(int argc, char** argv) {
+/////////////////////////////////////////////////////////////////////////////
+
+int mainQ(int argc, char** argv) {
 	QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
 
 	QApplication app(argc, argv);
