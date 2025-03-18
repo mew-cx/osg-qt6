@@ -1,4 +1,4 @@
-REM
+@echo off
 
 set VCPKG_ROOT=e:\usr\ap\osgearth_mew_tools\vcpkg
 
@@ -22,7 +22,7 @@ set OSGEARTH_NOTIFY_LEVEL=DEBUG
 set OSGEARTH_NOTIFY_LEVEL=
 
 ::osgearth_version.exe --caps
-::osgearth_viewer.exe cr-qt6.earth
+osgearth_viewer.exe apg.earth
 ::example-gl.exe
 ::example-osg.exe
-example-osgearth.exe cr-qt6.earth 
+example-osgearth.exe apg.earth
