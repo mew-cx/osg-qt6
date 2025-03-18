@@ -23,7 +23,7 @@ REM e:\usr\ap\osg-qt6\_BUILD\Release\example-osg.exe
 
 REM set OSG_NOTIFY_LEVEL=DEBUG
 REM set OSGEARTH_NOTIFY_LEVEL=DEBUG
-REM e:\usr\ap\osg-qt6\_BUILD\Release\example-osgearth.exe
+e:\usr\ap\osg-qt6\_BUILD\Release\example-osgearth.exe cr-qt6.earth
 
 
-e:\usr\ap\osg-qt6\_BUILD\Release\example-osgearth-qt6.exe cr-qt6.earth
+REM e:\usr\ap\osg-qt6\_BUILD\Release\example-osgearth-qt6.exe cr-qt6.earth
