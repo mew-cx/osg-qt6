@@ -29,7 +29,7 @@ using namespace osgEarth;
 using namespace osgEarth::Util;
 
 int
-main2(int argc, char** argv)
+main(int argc, char** argv)
 {
     osg::ArgumentParser arguments(&argc,argv);
 
@@ -55,8 +55,7 @@ class OSGWidget: public QOpenGLWidget, protected QOpenGLFunctions {
 Q_OBJECT
 
 public:
-	OSGWidget(QWidget* parent=nullptr):
-	QOpenGLWidget(parent) {
+	OSGWidget(QWidget* parent=nullptr): QOpenGLWidget(parent) {
 		_timer = new QTimer(this);
 
 		// connect(_timer, &QTimer::timeout, this, &OSGWidget::update);
@@ -73,12 +72,6 @@ protected:
 		osgEarth::initialize();
 
 		osgEarth::Map* map = new osgEarth::Map();
-
-		/* osgEarth::GDALImageLayer* imagery = new osgEarth::GDALImageLayer();
-
-		imagery->setURL("../world.tif");
-
-		map->addLayer(imagery); */
 
 		osgEarth::MapNode* node = new osgEarth::MapNode(map);
 
