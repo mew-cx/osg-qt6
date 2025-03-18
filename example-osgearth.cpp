@@ -100,7 +100,7 @@ protected:
     void resizeGL(int w, int h) override {
         OSG_WARN << "resizeGL: " << w << " x " << h << std::endl;
 
-        _viewer->getCamera()->setViewport(new osg::Viewport(0, 0, w, h));
+        _viewer->getCamera()->setViewport(new osg::Viewport(400, 400, w, h));
         _viewer->getCamera()->setProjectionMatrixAsPerspective(30.0f, static_cast<double>(w) / h, 1.0, 1000.0);
     }
 
@@ -134,7 +134,7 @@ int main(int argc, char** argv) {
     osgWidget->parseArgs(argc, argv);
 
     mainWindow.setCentralWidget(osgWidget);
-    mainWindow.resize(800, 600);
+    mainWindow.resize(800, 800);
     mainWindow.show();
 
     return app.exec();
