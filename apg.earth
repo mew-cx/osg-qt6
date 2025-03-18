@@ -1,0 +1,22 @@
+<map>
+    <TMSImage name="ReadyMap 15m Imagery">
+        <url>https://readymap.org/readymap/tiles/1.0.0/7/</url>
+    </TMSImage>
+
+    <TMSElevation name="ReadyMap 90m Elevation">
+        <url>https://readymap.org/readymap/tiles/1.0.0/116/</url>
+        <vdatum>egm96</vdatum>
+    </TMSElevation>
+
+    <viewpoints>
+        <viewpoint>
+            <heading>0</heading>
+            <height>4465.397310772911</height>
+            <lat>39.45481059</lat>
+            <long>-76.19382868</long>
+            <name>Aberdeen Proving Grounds, Maryland</name>
+            <pitch>-90</pitch>
+            <range>300.53643278375</range>
+        </viewpoint>
+    </viewpoints>
+</map>
