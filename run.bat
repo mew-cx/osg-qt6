@@ -21,8 +21,6 @@ set OSG_NOTIFY_LEVEL=
 set OSGEARTH_NOTIFY_LEVEL=DEBUG
 set OSGEARTH_NOTIFY_LEVEL=
 
-::osgearth_version.exe --caps
+osgearth_version.exe --caps
 osgearth_viewer.exe apg.earth
-::example-gl.exe
-::example-osg.exe
 example-osgearth.exe apg.earth
